@@ -4,7 +4,7 @@ var d=document,root=d.documentElement,paused=false;
 var hv=d.getElementById('heroVid'),pay=d.querySelector('.payoff'),PAY=2.59;
 function land(){if(!pay.classList.contains('on')&&window.__ekgBig)__ekgBig();pay.classList.add('on')}
 hv.addEventListener('timeupdate',function(){if(hv.currentTime>=PAY)land()});
-setTimeout(land,4200);
+setTimeout(land,Math.max(0,3800-performance.now()));
 function tryPlay(v){var p=v.play();if(p&&p.catch)p.catch(function(){})}
 // r18: the film holds on its first frame (= poster) until the intro opens, then plays from 0 with no seek
 tryPlay(hv);d.addEventListener('pointerdown',function(){if(!paused)tryPlay(hv)},{once:true});
