@@ -1,18 +1,18 @@
 if('scrollRestoration' in history)history.scrollRestoration='manual';addEventListener('pageshow',function(){if(!location.hash)scrollTo(0,0)});
 (function(){
 var d=document,root=d.documentElement,paused=false;
-var hv=d.getElementById('heroVid'),pay=d.querySelector('.payoff'),PAY=5.75;
+var hv=d.getElementById('heroVid'),pay=d.querySelector('.payoff'),PAY=8.34;
 function land(){if(!pay.classList.contains('on')&&window.__ekgBig)__ekgBig();pay.classList.add('on')}
 hv.addEventListener('timeupdate',function(){if(hv.currentTime>=PAY)land()});
 setTimeout(land,9000);
 function tryPlay(v){var p=v.play();if(p&&p.catch)p.catch(function(){})}
-tryPlay(hv);
-d.addEventListener('pointerdown',function(){if(!paused)tryPlay(hv)},{once:true});
+// r18: the film holds on its first frame (= poster) until the intro opens, then plays from 0 with no seek
+d.addEventListener('pointerdown',function(){if(!paused&&window.__heroOpen)tryPlay(hv)},{once:true});
 // lazy play on screen
 var lz=[].slice.call(d.querySelectorAll('video.lazyplay'));
 var io=new IntersectionObserver(function(es){es.forEach(function(e){var v=e.target;if(e.isIntersecting&&!paused){if(!v.src&&v.dataset.src){v.preload='auto';v.src=v.dataset.src}tryPlay(v)}else v.pause()})},{threshold:.15});
 lz.forEach(function(v){io.observe(v)});
-var hio=new IntersectionObserver(function(es){es.forEach(function(e){if(paused)return;e.isIntersecting?tryPlay(hv):hv.pause()})},{threshold:0});hio.observe(hv);
+var hio=new IntersectionObserver(function(es){es.forEach(function(e){if(paused)return;e.isIntersecting?(window.__heroOpen&&tryPlay(hv)):hv.pause()})},{threshold:0});hio.observe(hv);
 // reveals
 var rvs=[].slice.call(d.querySelectorAll('.lede,.creed-body p,.proof-head>*,.proof-film,.stats li,.svc-head>*,.culture-type>*,.reel,.talk-type>*,.form,.foot>*'));
 rvs.forEach(function(el){el.classList.add('rv')});
@@ -93,7 +93,7 @@ if(matchMedia('(hover:none)').matches){var cio2=new IntersectionObserver(functio
  window.__ekgBig=function(){big=1};
  window.__ekgKick=function(v){pv=Math.min(1.4,Math.max(pv,Math.abs(v)/40));if(px<0||px>W)px=W*.5};
  function clip(k){k=.4+.6*k;hf.style.clipPath=k>=1?'none':'inset('+(50*(1-k))+'% 0 '+(50*(1-k))+'% 0)'}
- function finish(){if(opened)return;opened=true;clip(1);hero.classList.remove('intro-on');words.forEach(function(w){if(!w.classList.contains('payoff'))w.classList.add('lit')});try{hv.currentTime=0;tryPlay(hv)}catch(e){}}
+ function finish(){if(opened)return;opened=true;clip(1);hero.classList.remove('intro-on');words.forEach(function(w){if(!w.classList.contains('payoff'))w.classList.add('lit')});window.__heroOpen=1;try{if(hv.currentTime>.05)hv.currentTime=0;tryPlay(hv)}catch(e){}}
  window.__introDone=function(){finish();words.forEach(function(w){w.classList.add('lit')})};
  clip(0);setTimeout(finish,6000);
  var io=new IntersectionObserver(function(es){on=es[0].isIntersecting});io.observe(hs);
