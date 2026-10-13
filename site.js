@@ -1,10 +1,10 @@
 if('scrollRestoration' in history)history.scrollRestoration='manual';addEventListener('pageshow',function(){if(!location.hash)scrollTo(0,0)});
 (function(){
 var d=document,root=d.documentElement,paused=false;
-var hv=d.getElementById('heroVid'),pay=d.querySelector('.payoff'),PAY=8.34;
+var hv=d.getElementById('heroVid'),pay=d.querySelector('.payoff'),PAY=3.4;
 function land(){if(!pay.classList.contains('on')&&window.__ekgBig)__ekgBig();pay.classList.add('on')}
 hv.addEventListener('timeupdate',function(){if(hv.currentTime>=PAY)land()});
-setTimeout(land,9000);
+setTimeout(land,4600);
 function tryPlay(v){var p=v.play();if(p&&p.catch)p.catch(function(){})}
 // r18: the film holds on its first frame (= poster) until the intro opens, then plays from 0 with no seek
 tryPlay(hv);d.addEventListener('pointerdown',function(){if(!paused)tryPlay(hv)},{once:true});
